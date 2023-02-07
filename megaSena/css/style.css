@@ -3,7 +3,19 @@ body {
     font-family: Arial, Arial, Helvetica, sans-serif;
     background-color: lightgray;
 }
+#megasena-buttons {
+    text-align: center;
+}
 
+#megasena-saved-games {
+    text-align: center;
+}
+#megasena-errors {
+    text-align: center;
+}
+.saved_game {
+    list-style: none;
+}
 button {
     cursor: pointer;
     padding: 10px;
@@ -17,6 +29,9 @@ button:hover {
 }
 
 .numbers {
+    margin: auto;
+    width: 60%;
+    text-align: center;
     border: 1px solid gray;
     padding: 10px;
     list-style: none;
@@ -40,3 +55,4 @@ button:hover {
     background-color: rgb(67, 64, 64);
     color: lightgrey;
 }
+

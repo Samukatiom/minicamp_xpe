@@ -1,4 +1,4 @@
-let state = {
+const state = {
   board: [],
   currentGame: [],
   savedGames: [],
@@ -32,7 +32,7 @@ const removeNumberFromGame = (numberToRemove) => {
   let newGame = [];
 
   for (let i = 0; i < state.currentGame.length; i++) {
-    let currentNumber = state.currentGame[i];
+    const currentNumber = state.currentGame[i];
 
     if (currentNumber === numberToRemove) {
       continue;
@@ -47,22 +47,23 @@ const isNumberInGame = (numberToCheck) => {
 };
 
 const saveGame = () => {
-  if (state.currentGame.length === 6) {
-    state.savedGames.push(state.currentGame);
-    newGame();
+  if (!isGameComplete) {
+    console.error(
+      `O jogo está incompleto, falta ${
+        6 - Number(state.currentGame.length)
+      } número para finaliza-lo`
+    );
     return;
   }
-  console.error(
-    `O jogo está incompleto, falta ${
-      6 - Number(state.currentGame.length)
-    } número para finaliza-lo`
-  );
+  state.savedGames.push(state.currentGame);
+  writeToLocalStorage();
+  newGame();
 };
 
 const resetGame = () => (state.currentGame = []);
 
 const handleNumberClick = (event) => {
-  let value = Number(event.currentTarget.textContent);
+  const value = Number(event.currentTarget.textContent);
 
   if (isNumberInGame(value)) {
     removeNumberFromGame(value);
@@ -70,7 +71,17 @@ const handleNumberClick = (event) => {
     addNumberToGame(value);
   }
   render();
-  console.log(state.currentGame);
+  // console.log(state.currentGame);
+};
+
+const renderError = () => {
+  let divError = document.querySelector("#megasena-errors");
+  divError.innerHTML = "";
+
+  let error = document.createElement("p");
+
+  error.textContent = "O jogo está completo";
+  isGameComplete() && divError.appendChild(error);
 };
 
 const renderBoard = () => {
@@ -81,7 +92,7 @@ const renderBoard = () => {
   ulNumbers.classList.add("numbers");
 
   for (let i = 0; i < state.board.length; i++) {
-    let currentNumber = state.board[i];
+    const currentNumber = state.board[i];
 
     let liNumber = document.createElement("li");
     liNumber.textContent = currentNumber;
@@ -113,11 +124,11 @@ const randomGame = () => {
   resetGame();
 
   while (!isGameComplete()) {
-    let randomNumber = Math.ceil(Math.random() * 60);
+    const randomNumber = Math.ceil(Math.random() * 60);
     addNumberToGame(randomNumber);
   }
   render();
-  console.log(state.currentGame);
+  // console.log(state.currentGame);
 };
 
 const createRandomGameButton = () => {
@@ -142,9 +153,9 @@ const renderButtons = () => {
   let divButtons = document.querySelector("#megasena-buttons");
   divButtons.innerHTML = "";
 
-  let buttonNewGame = createNewGameButton();
-  let buttonRandomGame = createRandomGameButton();
-  let buttonSaveGame = createSaveGameButton();
+  const buttonNewGame = createNewGameButton();
+  const buttonRandomGame = createRandomGameButton();
+  const buttonSaveGame = createSaveGameButton();
 
   divButtons.appendChild(buttonNewGame);
   divButtons.appendChild(buttonRandomGame);
@@ -162,10 +173,10 @@ const renderSavedGames = () => {
     let ulSavedGames = document.createElement("ul");
 
     for (let i = 0; i < state.savedGames.length; i++) {
-      let currentGame = state.savedGames[i];
+      const currentGame = state.savedGames[i];
 
       let liGame = document.createElement("li");
-
+      liGame.classList.add("saved_game");
       liGame.textContent = currentGame.join(" - ");
 
       ulSavedGames.appendChild(liGame);
@@ -178,6 +189,7 @@ const render = () => {
   renderBoard();
   renderButtons();
   renderSavedGames();
+  renderError();
 };
 const newGame = () => {
   resetGame();
@@ -192,9 +204,26 @@ const createBord = () => {
   }
 };
 
+const writeToLocalStorage = () => {
+  window.localStorage.setItem("saved-games", JSON.stringify(state.savedGames));
+};
+
+const readLocalStorage = () => {
+  if (!window.localStorage) {
+    return;
+  }
+  const savedGamesFromLocalStorage = window.localStorage.getItem("saved-games");
+
+  if (savedGamesFromLocalStorage) {
+    state.savedGames = JSON.parse(savedGamesFromLocalStorage);
+    render();
+  }
+};
+
 const start = () => {
   createBord();
   newGame();
+  readLocalStorage();
 };
 
 start();

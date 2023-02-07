@@ -1,0 +1,42 @@
+body {
+    padding: 10px;
+    font-family: Arial, Arial, Helvetica, sans-serif;
+    background-color: lightgray;
+}
+
+button {
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px;
+    border: 0px;
+    border-radius: 4px;
+}
+
+button:hover {
+    font-weight: bold;
+}
+
+.numbers {
+    border: 1px solid gray;
+    padding: 10px;
+    list-style: none;
+    font-family: monospace;
+    font-size: 20px;
+    text-align: center;
+}
+
+.number {
+    display: inline-block;
+    margin: 10px;
+    border: 1px solid gray;
+    width: 25px;
+    border-radius: 100%;
+    padding: 5px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.select_number {
+    background-color: rgb(67, 64, 64);
+    color: lightgrey;
+}

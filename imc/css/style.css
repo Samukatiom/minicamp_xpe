@@ -1,0 +1,10 @@
+body {
+    padding: 10px;
+    font-family: Arial, Arial, Helvetica, sans-serif;
+    background-color: lightgray;
+}
+input {
+    width: 100px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
